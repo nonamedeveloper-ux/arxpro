@@ -18,6 +18,12 @@ export const architectors = [
     image: '/images/architector-1.jpg',
     feedback:
       'Thank you for the fastest service ever, I liked how everything in the house was ready on time.',
+    projects: [
+      '/images/apartment.jpg',
+      '/images/about-hero.png',
+      '/images/bg-hero.png',
+      '/images/apartment.jpg',
+    ],
   },
   {
     fullName: 'John Carl',
@@ -26,6 +32,12 @@ export const architectors = [
     image: '/images/architector-2.png',
     feedback:
       'Thank you for the fastest service ever, I liked how everything in the house was ready on time.',
+    projects: [
+      '/images/about-hero.png',
+      '/images/bg-hero.png',
+      '/images/apartment.jpg',
+      '/images/about-hero.png',
+    ],
   },
   {
     fullName: 'Amelie Muller',
@@ -34,6 +46,12 @@ export const architectors = [
     image: '/images/architector-3.jpg',
     feedback:
       'Thank you for the fastest service ever, I liked how everything in the house was ready on time.',
+    projects: [
+      '/images/bg-hero.png',
+      '/images/apartment.jpg',
+      '/images/about-hero.png',
+      '/images/bg-hero.png',
+    ],
   },
 ]
 

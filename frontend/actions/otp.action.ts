@@ -4,17 +4,17 @@ import { Response } from '@/types'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
-export async function sendOtp(phone: string, nickName?: string): Promise<Response<null>> {
+export async function sendOtp(email: string, nickName?: string): Promise<Response<null>> {
   try {
     const res = await fetch(`${API_URL}/api/auth/send-sms`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phone, ...(nickName ? { nickName } : {}) }),
+      body: JSON.stringify({ email, ...(nickName ? { nickName } : {}) }),
     })
 
     if (!res.ok) {
       const json = await res.json()
-      return { status: res.status, message: json.message || 'Failed to send SMS', data: null }
+      return { status: res.status, message: json.message || 'Failed to send verification email', data: null }
     }
 
     return { status: 200, message: 'Verification code sent successfully', data: null }
@@ -24,12 +24,12 @@ export async function sendOtp(phone: string, nickName?: string): Promise<Respons
   }
 }
 
-export async function verifyOtp(phone: string, code: string): Promise<Response<null>> {
+export async function verifyOtp(email: string, code: string): Promise<Response<null>> {
   try {
     const res = await fetch(`${API_URL}/api/auth/verify-code`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phone, code }),
+      body: JSON.stringify({ email, code }),
     })
 
     const json = await res.json()

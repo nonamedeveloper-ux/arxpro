@@ -11,4 +11,9 @@ export interface IConfig {
   imageSize: number;
   imageCount: number;
   videoSize: number;
+  mailHost: string;
+  mailPort: number;
+  mailUser: string;
+  mailPass: string;
+  mailFrom: string;
 }

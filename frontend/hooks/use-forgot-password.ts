@@ -2,15 +2,15 @@ import { Step } from '@/types'
 import { create } from 'zustand'
 
 type ForgotPasswordStore = {
-  phone: string
+  email: string
   step: Step
-  setPhone: (phone: string) => void
+  setEmail: (email: string) => void
   setStep: (step: Step) => void
 }
 
 export const useForgotPassword = create<ForgotPasswordStore>(set => ({
-  phone: '',
+  email: '',
   step: 'first',
-  setPhone: phone => set({ phone }),
+  setEmail: email => set({ email }),
   setStep: step => set({ step }),
 }))

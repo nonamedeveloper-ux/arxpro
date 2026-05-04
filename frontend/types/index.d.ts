@@ -13,27 +13,27 @@ interface ChildProps {
   children: ReactNode
 }
 
-type ContactFormSchema = z.infer<typeof contactFormSchema>
-type LoginFormSchema = z.infer<typeof loginFormSchema>
-type RegisterFormSchema = z.infer<typeof registerFormSchema>
-type ForgotPasswordFormSchema = z.infer<typeof forgotPasswordFormSchema>
-type VerificationFormSchema = z.infer<typeof verificationFormSchema>
-type RecoveryPasswordFormSchema = z.infer<typeof recoveryPasswordFormSchema>
+export type ContactFormSchema = z.infer<typeof contactFormSchema>
+export type LoginFormSchema = z.infer<typeof loginFormSchema>
+export type RegisterFormSchema = z.infer<typeof registerFormSchema>
+export type ForgotPasswordFormSchema = z.infer<typeof forgotPasswordFormSchema>
+export type VerificationFormSchema = z.infer<typeof verificationFormSchema>
+export type RecoveryPasswordFormSchema = z.infer<typeof recoveryPasswordFormSchema>
 
-type Step = 'first' | 'second' | 'last'
+export type Step = 'first' | 'second' | 'last'
 
-interface Response<T> {
+export interface Response<T> {
   status: number
   message: string
   data: T
 }
 
-interface User {
+export interface User {
   id?: string
-  phone: string
+  phone?: string
   role: string
   nickName?: string
-  email?: string
+  email: string
   firstName?: string
   lastName?: string
   password?: string

@@ -23,21 +23,22 @@ export default function VerificationForm() {
 
   const [isLoading, setIsLoading] = useState(false)
   const { userDetails } = useUserDetails()
-  const { phone, step, setStep } = useForgotPassword()
+  const { email, step, setStep } = useForgotPassword()
   const router = useRouter()
 
   const onVerificationFormSubmit = (values: VerificationFormSchema) => {
     setIsLoading(true)
 
-    if (userDetails?.phone) {
-      verifyOtp(userDetails.phone, values.code)
+    if (userDetails?.email) {
+      verifyOtp(userDetails.email, values.code)
         .then(({ status, message }) => {
           if (status === 200) {
             register({
-              phone: userDetails.phone,
+              email: userDetails.email,
               password: userDetails.password!,
               nickName: userDetails.nickName,
               role: userDetails.role,
+              phone: userDetails.phone,
             })
               .then(({ status, message }) => {
                 if (status === 201) {
@@ -67,7 +68,7 @@ export default function VerificationForm() {
     }
 
     if (step === 'second') {
-      verifyOtp(phone, values.code)
+      verifyOtp(email, values.code)
         .then(({ status, message }) => {
           if (status === 200) {
             setStep('last')
@@ -89,9 +90,9 @@ export default function VerificationForm() {
   const onResend = () => {
     setIsLoading(true)
 
-    const phoneNumber = userDetails?.phone ? userDetails.phone : phone
+    const userEmail = userDetails?.email ? userDetails.email : email
 
-    sendOtp(phoneNumber)
+    sendOtp(userEmail)
       .then(({ status, message }) => {
         if (status === 200) {
           toast.success(message)
@@ -153,7 +154,7 @@ export default function VerificationForm() {
         </Button>
 
         <div className='flex justify-center items-center gap-x-2'>
-          <p>Haven&apos;t you received SMS code yet?</p>
+          <p>Haven&apos;t you received verification code yet?</p>
           <Button
             type='button'
             variant={'ghost'}

@@ -17,16 +17,16 @@ import { Loader } from 'lucide-react'
 export default function LoginForm() {
   const loginForm = useForm<LoginFormSchema>({
     resolver: zodResolver(loginFormSchema),
-    defaultValues: { phone: '', password: '' },
+    defaultValues: { email: '', password: '' },
   })
 
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
-  const onLoginFormSubmit = ({ phone, password }: LoginFormSchema) => {
+  const onLoginFormSubmit = ({ email, password }: LoginFormSchema) => {
     setIsLoading(true)
 
-    login(phone, password)
+    login(email, password)
       .then(({ status, message }) => {
         if (status === 200) {
           toast.success(message)
@@ -48,19 +48,19 @@ export default function LoginForm() {
     <Form {...loginForm}>
       <form onSubmit={loginForm.handleSubmit(onLoginFormSubmit)} className='space-y-4'>
         <FormField
-          name='phone'
+          name='email'
           control={loginForm.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel className='text-base mb-1'>Phone number</FormLabel>
+              <FormLabel className='text-base mb-1'>Email address</FormLabel>
               <FormControl>
                 <Input
                   {...field}
-                  placeholder='+998XXXXXXXXX'
+                  placeholder='example@mail.com'
                   className='bg-transparent rounded-[8px] text-white-1 h-10 placeholder:text-gray-6'
                   disabled={isLoading}
-                  type='tel'
-                  autoComplete='tel'
+                  type='email'
+                  autoComplete='email'
                 />
               </FormControl>
               <FormMessage />

@@ -1,9 +1,10 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto, LoginDto } from './dto/auth.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { SentSmsDto } from './dto/sentSms.dto';
-import { VerifayDto } from './dto/verifayDto';
+import { SendOtpDto } from './dto/sendOtp.dto';
+import { VerifyOtpDto } from './dto/verifyOtp.dto';
+import { Response } from 'express';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -11,22 +12,46 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
-  async login(@Body() createAuthDto: LoginDto) {
-    return this.authService.login(createAuthDto);
+  async login(
+    @Body() loginDto: LoginDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const result = await this.authService.login(loginDto);
+    if (result.data && result.data.token) {
+      res.cookie('token', result.data.token, {
+        httpOnly: true,
+        secure: false, // Set to true in production
+        sameSite: 'lax',
+        maxAge: 2 * 24 * 60 * 60 * 1000, // 2 days
+      });
+    }
+    return result;
   }
 
   @Post('register')
-  async register(@Body() createUserDto: CreateUserDto) {
-    return this.authService.register(createUserDto);
+  async register(
+    @Body() createUserDto: CreateUserDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const result = await this.authService.register(createUserDto);
+    if (result.data && result.data.token) {
+      res.cookie('token', result.data.token, {
+        httpOnly: true,
+        secure: false, // Set to true in production
+        sameSite: 'lax',
+        maxAge: 2 * 24 * 60 * 60 * 1000, // 2 days
+      });
+    }
+    return result;
   }
 
   @Post('send-sms')
-  async SentSms(@Body() sentSms: SentSmsDto) {
-    await this.authService.sentSms(sentSms);
+  async sendOtp(@Body() sendOtpDto: SendOtpDto) {
+    await this.authService.sendOtp(sendOtpDto);
   }
 
   @Post('verify-code')
-  async VerifaySmsCode(@Body() verifayCode: VerifayDto) {
-    return await this.authService.verifay(verifayCode);
+  async verifyOtp(@Body() verifyOtpDto: VerifyOtpDto) {
+    return await this.authService.verifyOtp(verifyOtpDto);
   }
 }

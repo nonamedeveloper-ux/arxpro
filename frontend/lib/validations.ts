@@ -1,9 +1,5 @@
 import z from 'zod'
 
-const phoneSchema = z
-  .string()
-  .regex(/^\+998\d{9}$/, 'Phone number must be in format +998XXXXXXXXX')
-
 export const contactFormSchema = z.object({
   firstName: z
     .string('First name is required')
@@ -13,7 +9,7 @@ export const contactFormSchema = z.object({
     .string('Last name is required')
     .min(3, 'Last name must be at least 3 characters')
     .max(32, 'Last name must be less than 32 characters'),
-  email: z.email('Invalid email address'),
+  email: z.string().email('Invalid email address'),
   message: z
     .string()
     .min(10, 'Message must be at least 10 characters')
@@ -21,7 +17,7 @@ export const contactFormSchema = z.object({
 })
 
 export const loginFormSchema = z.object({
-  phone: phoneSchema,
+  email: z.string().email('Invalid email address'),
   password: z
     .string('Password is required')
     .min(6, 'Password must be at least 6 characters')
@@ -34,7 +30,8 @@ export const registerFormSchema = z.object({
     .min(3, 'Nick name must be at least 3 characters')
     .max(50, 'Nick name must be less than 50 characters'),
   role: z.string('Role is required').min(4, 'Role is required'),
-  phone: phoneSchema,
+  email: z.string().email('Invalid email address'),
+  phone: z.string().optional(),
   password: z
     .string('Password is required')
     .min(6, 'Password must be at least 6 characters')
@@ -42,11 +39,11 @@ export const registerFormSchema = z.object({
 })
 
 export const forgotPasswordFormSchema = z.object({
-  phone: phoneSchema,
+  email: z.string().email('Invalid email address'),
 })
 
 export const verificationFormSchema = z.object({
-  code: z.string('SMS code is required').length(6, 'SMS code must be 6 characters'),
+  code: z.string('Verification code is required').length(6, 'Verification code must be 6 characters'),
 })
 
 export const recoveryPasswordFormSchema = z

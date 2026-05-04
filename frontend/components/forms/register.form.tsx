@@ -22,22 +22,22 @@ interface RegisterFormProps {
 export default function RegisterForm({ setIsVerifying }: RegisterFormProps) {
   const registerFrom = useForm<RegisterFormSchema>({
     resolver: zodResolver(registerFormSchema),
-    defaultValues: { nickName: '', role: '', phone: '', password: '' },
+    defaultValues: { nickName: '', role: '', email: '', password: '' },
   })
 
   const { setUserDetails } = useUserDetails()
   const [isLoading, setIsLoading] = useState(false)
 
   const onRegisterFormSubmit = (values: RegisterFormSchema) => {
-    const { nickName, phone, role, password } = values
+    const { nickName, email, role, password } = values
 
     setIsLoading(true)
 
-    sendOtp(phone, nickName)
+    sendOtp(email, nickName)
       .then(({ status, message }) => {
         if (status === 200) {
           setIsVerifying(true)
-          setUserDetails({ phone, nickName, role, password })
+          setUserDetails({ email, nickName, role, password })
           toast.success(message)
         } else {
           toast.error(message)
@@ -74,19 +74,19 @@ export default function RegisterForm({ setIsVerifying }: RegisterFormProps) {
         />
 
         <FormField
-          name='phone'
+          name='email'
           control={registerFrom.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel className='text-base mb-1'>Phone number</FormLabel>
+              <FormLabel className='text-base mb-1'>Email address</FormLabel>
               <FormControl>
                 <Input
                   {...field}
-                  placeholder='+998XXXXXXXXX'
+                  placeholder='example@mail.com'
                   className='bg-transparent rounded-[8px] text-white-1 h-10 placeholder:text-gray-6'
                   disabled={isLoading}
-                  type='tel'
-                  autoComplete='tel'
+                  type='email'
+                  autoComplete='email'
                 />
               </FormControl>
               <FormMessage />

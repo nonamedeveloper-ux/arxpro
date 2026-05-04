@@ -6,29 +6,29 @@ import { CreateUserDto, LoginDto } from './dto/auth.dto';
 import {
   LoginOrPasswordWrongException,
   NickNameIsNotException,
-  UserPhoneSuchExseption,
+  UserEmailSuchExseption,
 } from './exception/auth.exception';
 import { compar, hashed } from '../../lib/bcrypt';
 import { UserEntity } from '../user/entities/user.entity';
 import { UserRepository } from '../user/user.repository';
 import { generateRandomNumber } from '../../lib/generateCode';
-import { SmsService } from '../../lib/smsService';
-import { VerifayDto } from './dto/verifayDto';
+import { MailService } from '../../lib/mailService';
+import { VerifyOtpDto } from './dto/verifyOtp.dto';
 import { Cache } from 'cache-manager';
 import { config } from '../../common/config/typeorm.config';
-import { SentSmsDto } from './dto/sentSms.dto';
+import { SendOtpDto } from './dto/sendOtp.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userRepository: UserRepository,
     private jwtService: JwtService,
-    private readonly smsService: SmsService,
+    private readonly mailService: MailService,
     @Inject('CACHE_MANAGER') private cacheManager: Cache,
   ) {}
 
   async login(dto: LoginDto): Promise<ResData<ILoginData>> {
-    const foundUser = await this.userRepository.findOneByPhone(dto.phone);
+    const foundUser = await this.userRepository.findOneByEmail(dto.email);
     if (!foundUser) {
       throw new LoginOrPasswordWrongException();
     }
@@ -53,10 +53,10 @@ export class AuthService {
   }
 
   async register(dto: CreateUserDto): Promise<ResData<ILoginData>> {
-    const foundUser = await this.userRepository.findOneByPhone(dto.phone);
+    const foundUser = await this.userRepository.findOneByEmail(dto.email);
 
     if (foundUser) {
-      throw new UserPhoneSuchExseption();
+      throw new UserEmailSuchExseption();
     }
     dto.password = await hashed(dto.password);
     const newUser = new UserEntity();
@@ -79,7 +79,7 @@ export class AuthService {
     });
   }
 
-  async sentSms(dto: SentSmsDto) {
+  async sendOtp(dto: SendOtpDto) {
     const generateCode = generateRandomNumber(6);
     if (dto.nickName) {
       const foundUser = await this.userRepository.findOneByNickName(
@@ -90,22 +90,20 @@ export class AuthService {
       }
     }
 
-    const message = `ArxPro platformasida ro‘yhatdan o‘tish uchun tasdiqlash kodi: ${generateCode}`;
+    await this.mailService.sendOtp(dto.email, String(generateCode));
 
-    await this.smsService.sendSMS(dto.phone, message);
-
-    await this.cacheManager.set(dto.phone, generateCode, 120000);
+    await this.cacheManager.set(dto.email, generateCode, 120000);
   }
 
-  async verifay(dto: VerifayDto): Promise<ResData<boolean>> {
-    let chacked = false;
+  async verifyOtp(dto: VerifyOtpDto): Promise<ResData<boolean>> {
+    let checked = false;
 
-    const phoneCode = await this.cacheManager.get(dto.phone);
+    const emailCode = await this.cacheManager.get(dto.email);
 
-    if (phoneCode == dto.code) {
-      chacked = true;
+    if (emailCode == dto.code) {
+      checked = true;
     }
 
-    return new ResData<boolean>('Verifay sms code', 200, chacked);
+    return new ResData<boolean>('Verify OTP code', 200, checked);
   }
 }

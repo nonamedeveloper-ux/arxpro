@@ -17,6 +17,11 @@ export const config: IConfig = {
   imageSize: Number(process.env.IMAGE_SIZE) || 5242880,
   imageCount: Number(process.env.IMAGE_COUNT) || 10,
   videoSize: Number(process.env.VIDEO_SIZE) || 52428800,
+  mailHost: process.env.MAIL_HOST,
+  mailPort: Number(process.env.MAIL_PORT) || 587,
+  mailUser: process.env.MAIL_USER,
+  mailPass: process.env.MAIL_PASS,
+  mailFrom: process.env.MAIL_FROM,
 };
 
 export const typeOrmConfig: DataSourceOptions = {

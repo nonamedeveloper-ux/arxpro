@@ -9,8 +9,7 @@ export class UserEntity extends BaseEntity {
     name: 'phone',
     type: 'varchar',
     length: 126,
-    nullable: false,
-    unique: true,
+    nullable: true,
   })
   phone: string;
 
@@ -56,7 +55,8 @@ export class UserEntity extends BaseEntity {
   @Column({
     name: 'email',
     type: 'text',
-    nullable: true,
+    nullable: false,
+    unique: true,
   })
   email: string;
 

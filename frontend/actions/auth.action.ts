@@ -5,12 +5,12 @@ import { Response } from '@/types'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
-export async function login(phone: string, password: string): Promise<Response<{ user: any; token: string } | null>> {
+export async function login(email: string, password: string): Promise<Response<{ user: any; token: string } | null>> {
   try {
     const res = await fetch(`${API_URL}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phone, password }),
+      body: JSON.stringify({ email, password }),
     })
 
     const json = await res.json()
@@ -29,11 +29,11 @@ export async function login(phone: string, password: string): Promise<Response<{
 }
 
 export async function register(userData: {
-  phone: string
+  email: string
   password: string
   nickName?: string
   role?: string
-  email?: string
+  phone?: string
 }): Promise<Response<{ user: any; token: string } | null>> {
   try {
     const res = await fetch(`${API_URL}/api/auth/register`, {

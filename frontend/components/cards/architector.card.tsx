@@ -12,6 +12,20 @@ interface ArchitectorCardProps {
   index: number
 }
 
+const PartialStar = ({ fillPercentage }: { fillPercentage: number }) => {
+  return (
+    <div className='relative inline-block'>
+      <Star className='size-4 text-gray-400' />
+      <div
+        className='absolute top-0 left-0 overflow-hidden whitespace-nowrap'
+        style={{ width: `${fillPercentage * 100}%` }}
+      >
+        <Star className='size-4 fill-primary text-primary' />
+      </div>
+    </div>
+  )
+}
+
 export default function ArchitectorCard({
   fullName,
   profession,
@@ -21,7 +35,9 @@ export default function ArchitectorCard({
   index,
 }: ArchitectorCardProps) {
   return (
-    <Card className={'border-blue-1 border-2 rounded-[1rem] bg-background'}>
+    <Card
+      className={'border-blue-1 border-2 rounded-[1rem] bg-background cursor-pointer hover:border-primary transition-colors'}
+    >
       <CardContent className='flex gap-8'>
         <Avatar
           className={cn(
@@ -45,9 +61,14 @@ export default function ArchitectorCard({
 
           <div className='flex items-center justify-between'>
             <h4 className='text-base'>{profession}</h4>
-            <div className='flex items-center gap-x-2'>
-              <Star className='text-primary' />
-              <span>{rating.toFixed(1)}</span>
+            <div className='flex items-center gap-x-1'>
+              <div className='flex'>
+                {[1, 2, 3, 4, 5].map((starIndex) => {
+                  const fillPercentage = Math.min(Math.max(rating - (starIndex - 1), 0), 1)
+                  return <PartialStar key={starIndex} fillPercentage={fillPercentage} />
+                })}
+              </div>
+              <span className='text-sm font-bold'>{rating.toFixed(1)}</span>
             </div>
           </div>
         </div>

@@ -6,9 +6,9 @@ export class LoginOrPasswordWrongException extends HttpException {
   }
 }
 
-export class UserPhoneSuchExseption extends HttpException {
+export class UserEmailSuchExseption extends HttpException {
   constructor() {
-    super('There is such a phone user', 400);
+    super('There is such an email user', 400);
   }
 }
 

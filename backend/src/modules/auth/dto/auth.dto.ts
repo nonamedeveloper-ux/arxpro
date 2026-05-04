@@ -15,12 +15,11 @@ export class LoginDto {
   @ApiProperty({
     type: String,
     required: true,
-    minLength: 13,
-    maxLength: 13,
-    example: '+998991853703',
+    example: 'user@example.com',
   })
+  @IsEmail()
   @IsNotEmpty()
-  phone: string;
+  email: string;
 
   @ApiProperty({
     type: String,
@@ -52,11 +51,11 @@ export class CreateUserDto {
 
   @ApiProperty({
     type: String,
-    required: true,
+    required: false,
     minLength: 13,
     maxLength: 13,
   })
-  @IsNotEmpty()
+  @IsOptional()
   phone: string;
 
   @ApiProperty({
@@ -74,11 +73,11 @@ export class CreateUserDto {
 
   @ApiProperty({
     type: String,
-    required: false,
+    required: true,
     example: 'user@example.com',
   })
-  @IsOptional()
   @IsEmail()
+  @IsNotEmpty()
   email: string;
 
   @ApiProperty({

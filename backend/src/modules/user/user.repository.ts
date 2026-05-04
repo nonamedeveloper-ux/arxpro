@@ -62,6 +62,10 @@ export class UserRepository implements IUserRepository {
     return await this.repository.findOneBy({ phone });
   }
 
+  async findOneByEmail(email: string): Promise<UserEntity | undefined> {
+    return await this.repository.findOneBy({ email });
+  }
+
   async findOneByNickName(nickName: string): Promise<UserEntity | undefined> {
     return await this.repository.findOneBy({ nickName });
   }

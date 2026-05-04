@@ -16,19 +16,19 @@ import { useForgotPassword } from '@/hooks/use-forgot-password'
 export default function ForgotPasswordForm() {
   const forgotPasswordForm = useForm<ForgotPasswordFormSchema>({
     resolver: zodResolver(forgotPasswordFormSchema),
-    defaultValues: { phone: '' },
+    defaultValues: { email: '' },
   })
 
   const [isLoading, setIsLoading] = useState(false)
-  const { setPhone, setStep } = useForgotPassword()
+  const { setEmail, setStep } = useForgotPassword()
 
-  const onForgotPasswordFormSubmit = ({ phone }: ForgotPasswordFormSchema) => {
+  const onForgotPasswordFormSubmit = ({ email }: ForgotPasswordFormSchema) => {
     setIsLoading(true)
 
-    sendOtp(phone)
+    sendOtp(email)
       .then(({ status, message }) => {
         if (status === 200) {
-          setPhone(phone)
+          setEmail(email)
           setStep('second')
           toast.success(message)
         } else {
@@ -50,19 +50,19 @@ export default function ForgotPasswordForm() {
         className='space-y-6'
       >
         <FormField
-          name='phone'
+          name='email'
           control={forgotPasswordForm.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel className='text-base mb-1'>Phone number</FormLabel>
+              <FormLabel className='text-base mb-1'>Email address</FormLabel>
               <FormControl>
                 <Input
                   {...field}
-                  placeholder='+998XXXXXXXXX'
+                  placeholder='example@mail.com'
                   className='bg-transparent rounded-[8px] text-white-1 h-10 placeholder:text-gray-6'
                   disabled={isLoading}
-                  type='tel'
-                  autoComplete='tel'
+                  type='email'
+                  autoComplete='email'
                 />
               </FormControl>
               <FormMessage />
