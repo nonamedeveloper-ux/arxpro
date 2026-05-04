@@ -1,0 +1,23 @@
+# Application
+PORT=3000
+
+# Database
+DB_URL=postgres://postgres:password@localhost:5432/arxpro
+
+# JWT
+JWT_SECRET_KEY=your_secret_key_here
+JWT_EXPIRED_IN=2d
+
+# SMS service (Eskiz)
+SMS_EMAIL=your_email@gmail.com
+SMS_PASSWORD=your_sms_password
+SMS_API_URL=https://notify.eskiz.uz/api
+
+# Redis
+REDIS_HOST=localhost
+REDIS_PORT=6379
+
+# File upload limits (bytes)
+IMAGE_SIZE=5242880
+IMAGE_COUNT=10
+VIDEO_SIZE=52428800
