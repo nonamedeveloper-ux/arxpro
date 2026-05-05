@@ -58,7 +58,7 @@ export default function otpTemplate(otp: number) {
 <body>
     <div class="container">
         <div class="header">
-            ArxPro
+            Archify
         </div>
         <div class="content">
             <p>Here is your one-time password (OTP) for secure access:</p>

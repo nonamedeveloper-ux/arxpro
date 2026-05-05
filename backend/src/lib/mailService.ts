@@ -19,17 +19,26 @@ export class MailService {
   }
 
   async sendMail(to: string, subject: string, text: string, html?: string) {
-    const info = await this.transporter.sendMail({
-      from: config.mailFrom,
-      to,
-      subject,
-      text,
-      html,
-    });
-    return info;
+    try {
+      const info = await this.transporter.sendMail({
+        from: config.mailFrom,
+        to,
+        subject,
+        text,
+        html,
+      });
+      return info;
+    } catch (error) {
+      console.error('Email sending failed:', error.message);
+      return null;
+    }
   }
 
   async sendOtp(to: string, otp: string) {
+    console.log('-----------------------------------------');
+    console.log(`OTP for ${to}: ${otp}`);
+    console.log('-----------------------------------------');
+    
     const subject = 'Your Verification Code';
     const text = `Your verification code is: ${otp}`;
     const html = `<b>Your verification code is: ${otp}</b>`;

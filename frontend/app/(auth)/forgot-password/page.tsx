@@ -3,9 +3,9 @@ import Logo from '@/components/shared/logo'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'ArxPro | Forgot password',
+  title: 'Archify | Forgot password',
   openGraph: {
-    title: 'ArxPro | Forgot password',
+    title: 'Archify | Forgot password',
   },
 }
 

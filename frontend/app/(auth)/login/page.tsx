@@ -4,9 +4,9 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'ArxPro | Login',
+  title: 'Archify | Login',
   openGraph: {
-    title: 'ArxPro | Login',
+    title: 'Archify | Login',
   },
 }
 

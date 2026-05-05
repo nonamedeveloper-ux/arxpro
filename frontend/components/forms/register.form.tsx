@@ -115,7 +115,7 @@ export default function RegisterForm({ setIsVerifying }: RegisterFormProps) {
                     User
                   </SelectItem>
                   <SelectItem value='architektor' className='font-bold'>
-                    Architector
+                    Architect
                   </SelectItem>
                 </SelectContent>
               </Select>

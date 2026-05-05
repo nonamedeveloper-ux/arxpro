@@ -3,9 +3,9 @@ import Logo from '@/components/shared/logo'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'ArxPro | Register',
+  title: 'Archify | Register',
   openGraph: {
-    title: 'ArxPro | Register',
+    title: 'Archify | Register',
   },
 }
 

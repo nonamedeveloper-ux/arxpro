@@ -2,7 +2,7 @@
 PORT=3000
 
 # Database
-DB_URL=postgres://postgres:password@localhost:5432/arxpro
+DB_URL=postgres://postgres:password@localhost:5432/archify
 
 # JWT
 JWT_SECRET_KEY=your_secret_key_here

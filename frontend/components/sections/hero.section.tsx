@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { Button } from '../ui/button'
 import { ArrowRight } from 'lucide-react'
+import Link from 'next/link'
 
 export default function HeroSection() {
   return (
@@ -16,25 +17,27 @@ export default function HeroSection() {
           <div className='size-full max-md:flex-col flex items-center md:items-start max-md:pl-4 md:pl-24 lg:pl-36 max-md:pr-4 md:pr-12 lg:pr-24 max-md:gap-8 md:gap-12 lg:gap-24 md:mt-28'>
             <div className='flex flex-col gap-y-6 md:flex-1 max-md:mt-16'>
               <h2 className='max-md:text-2xl md:text-4xl font-bold '>
-                This is the website, where shown the works of best Architecture Designers
+                This is a website where the works of the best architecture designers are shown.
               </h2>
               <div className='max-md:hidden'>
-                <Button className='rounded-[8px]'>
-                  Show More <ArrowRight />
-                </Button>
+                <Link href={'#projects'}>
+                  <Button className='rounded-[8px]'>
+                    Show More <ArrowRight />
+                  </Button>
+                </Link>
               </div>
             </div>
 
             <p className='md:flex-1'>
-              It is a long established fact that a reader will be distracted by the readable content
-              of a page when looking at its layout. As opposed to using &apos;Content here, content
-              here making it look like readable English.
+
             </p>
 
             <div className='md:hidden'>
-              <Button className='rounded-[8px]'>
-                Show More <ArrowRight />
-              </Button>
+              <Link href={'#projects'}>
+                <Button className='rounded-[8px]'>
+                  Show More <ArrowRight />
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

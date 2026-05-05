@@ -3,13 +3,14 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Card, CardContent } from '../ui/card'
 import { cn } from '@/lib/utils'
 
-interface ArchitectorCardProps {
+interface ArchitectCardProps {
   fullName: string
   profession: string
   rating: number
   image: string
   feedback: string
   index: number
+  onClick?: () => void
 }
 
 const PartialStar = ({ fillPercentage }: { fillPercentage: number }) => {
@@ -26,17 +27,19 @@ const PartialStar = ({ fillPercentage }: { fillPercentage: number }) => {
   )
 }
 
-export default function ArchitectorCard({
+export default function ArchitectCard({
   fullName,
   profession,
   rating,
   image,
   feedback,
   index,
-}: ArchitectorCardProps) {
+  onClick,
+}: ArchitectCardProps) {
   return (
     <Card
-      className={'border-blue-1 border-2 rounded-[1rem] bg-background cursor-pointer hover:border-primary transition-colors'}
+      onClick={onClick}
+      className={cn('border-blue-1 border-2 rounded-[1rem] bg-background cursor-pointer hover:border-primary transition-colors')}
     >
       <CardContent className='flex gap-8'>
         <Avatar

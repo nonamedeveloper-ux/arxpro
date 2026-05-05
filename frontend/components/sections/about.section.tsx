@@ -7,11 +7,7 @@ export default function AboutSection() {
     <section className='flex justify-center flex-col max-sm:px-4 sm:px-24 py-16 gap-y-16 max-sm:pb-24'>
       <SectionHeader
         title='About us'
-        description="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
-          been the industry's standard dummy text ever since the 1500s, when an unknown printer
-          took a galley of type and scrambled it to make a type specimen book. It has survived not
-          only five centuries, but also the leap into electronic typesetting, remaining essentially
-          unchanged."
+        description="Archify is a leading online platform designed to connect architects and clients, providing a seamless space for collaboration, creativity, and project management. Our mission is to simplify the architectural process, making it easier for clients to find and work with talented architects who meet their project needs. Online platform designed to connect architects and clients, providing a seamless space for collaboration, creativity, and project management. Our mission is to simplify the architectural process, making it easier for clients to find and work with talented architects who meet their project needs."
       />
 
       <div className='relative max-sm:h-[560px] sm:h-[640px] w-full'>

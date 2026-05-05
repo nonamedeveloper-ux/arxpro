@@ -1,7 +1,7 @@
-# ArxPro — Claude uchun loyiha konteksti
+# Archify — Claude uchun loyiha konteksti
 
 ## Loyiha haqida
-ArxPro — arxitektura platformasi. Next.js 15 (frontend) + NestJS (backend).
+Archify — arxitektura platformasi. Next.js 15 (frontend) + NestJS (backend).
 
 ## Muhim: auth email emas, PHONE ishlatadi
 Login va register da `email` o'rniga `phone` (+998XXXXXXXXX format).

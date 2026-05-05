@@ -15,8 +15,8 @@ export default function Footer() {
         </div>
 
         <div className='flex items-center font-bold text-2xl mt-6 max-md:justify-center'>
-          <span className='text-primary'>Arx</span>
-          <span className='text-white-1'>Pro</span>
+          <span className='text-primary'></span>
+          <span className='text-white-1'>Archify</span>
         </div>
 
         <p className='mt-8 text-gray-3 max-md:text-center'>

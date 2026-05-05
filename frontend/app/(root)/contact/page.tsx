@@ -5,9 +5,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'ArxPro | Contact us',
+  title: 'Archify | Contact us',
   openGraph: {
-    title: 'ArxPro | Contact us',
+    title: 'Archify | Contact us',
   },
 }
 

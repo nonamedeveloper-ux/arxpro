@@ -4,9 +4,9 @@ import { Metadata } from 'next'
 import Image from 'next/image'
 
 export const metadata: Metadata = {
-  title: 'ArxPro | About us',
+  title: 'Archify | About us',
   openGraph: {
-    title: 'ArxPro | About us',
+    title: 'Archify | About us',
   },
 }
 
@@ -15,7 +15,7 @@ export default function AboutPage() {
     <div className='pt-32 max-md:px-4 md:px-24 pb-12'>
       <SectionHeader
         title='About Us'
-        description='Arxpro is a leading online platform designed to connect architects and clients, providing a seamless space for collaboration, creativity, and project management. Our mission is to simplify the architectural process, making it easier for clients to find and work with talented architects who meet their project needs. Online platform designed to connect architects and clients, providing a seamless space for collaboration, creativity, and project management. Our mission is to simplify the architectural process, making it easier for clients to find and work with talented architects who meet their project needs.'
+        description='Archify is a leading online platform designed to connect architects and clients, providing a seamless space for collaboration, creativity, and project management. Our mission is to simplify the architectural process, making it easier for clients to find and work with talented architects who meet their project needs. Online platform designed to connect architects and clients, providing a seamless space for collaboration, creativity, and project management. Our mission is to simplify the architectural process, making it easier for clients to find and work with talented architects who meet their project needs.'
       />
 
       <div className='lg:px-24'>
@@ -49,7 +49,7 @@ export default function AboutPage() {
         <div className='mt-12'>
           <h2 className='text-4xl font-bold'>What We Do</h2>
           <p className='mt-3'>
-            At ArxPro platform, we specialize in a wide range of IT services, including
+            At Archify platform, we specialize in a wide range of IT services, including
           </p>
 
           <div className='grid grid-cols-1 md:grid-cols-2 gap-4 mt-8'>

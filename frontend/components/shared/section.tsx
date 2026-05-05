@@ -9,7 +9,9 @@ interface SectionProps {
   moreButtonLabel?: string
   moreButtonPath?: string
   moreButtonClassName?: string
+  moreButtonOnClick?: () => void
   children?: ReactNode
+  id?: string
 }
 
 export default function Section({
@@ -19,19 +21,25 @@ export default function Section({
   moreButtonLabel,
   moreButtonPath,
   moreButtonClassName,
+  moreButtonOnClick,
   children,
+  id,
 }: SectionProps) {
   return (
-    <section className={`flex justify-center flex-col py-16 gap-y-12 ${sectionClassName}`}>
+    <section
+      id={id}
+      className={`flex justify-center flex-col py-16 gap-y-12 ${sectionClassName}`}
+    >
       <SectionHeader title={sectionHeaderTitle} description={sectionHeaderDescription} />
 
       {children && children}
 
-      {moreButtonLabel && moreButtonPath && (
+      {moreButtonLabel && (moreButtonPath || moreButtonOnClick) && (
         <div className='mx-auto'>
           <MoreButton
             label={moreButtonLabel}
             path={moreButtonPath}
+            onClick={moreButtonOnClick}
             className={moreButtonClassName}
           />
         </div>

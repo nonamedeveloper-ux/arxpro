@@ -32,7 +32,7 @@ async function bootstrap() {
     .setTitle('Architektor')
     .setDescription('this is v1')
     .setVersion('1.0.0')
-    .addTag('Your API Tag ArxPro')
+    .addTag('Your API Tag Archify')
     .addBearerAuth()
     .build();
 

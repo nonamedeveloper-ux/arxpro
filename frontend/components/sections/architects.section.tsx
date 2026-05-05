@@ -1,13 +1,14 @@
 'use client'
 
-import { architectors } from '@/constants'
-import ArchitectorCard from '../cards/architector.card'
+import { architects } from '@/constants'
+import ArchitectCard from '../cards/architect.card'
 import Section from '../shared/section'
 import { useState, useEffect } from 'react'
 import { Dialog, DialogContent } from '../ui/dialog'
-import { Star, X } from 'lucide-react'
+import { Star, X, Loader2 } from 'lucide-react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Button } from '../ui/button'
 
 const PartialStar = ({ fillPercentage }: { fillPercentage: number }) => {
   return (
@@ -35,40 +36,89 @@ const StarRating = ({ rating }: { rating: number }) => {
   )
 }
 
-export default function ArchitectorsSection() {
-  const [selectedArch, setSelectedArch] = useState<(typeof architectors)[0] | null>(null)
+export default function ArchitectsSection() {
+  const [selectedArch, setSelectedArch] = useState<(typeof architects)[0] | null>(null)
+  const [visibleCount, setVisibleCount] = useState(3)
+  const [isLoading, setIsLoading] = useState(false)
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     setMounted(true)
   }, [])
 
+  const handleLoadMore = () => {
+    if (visibleCount >= architects.length) return
+    
+    setIsLoading(true)
+    // Small delay for the loader feel
+    setTimeout(() => {
+      setVisibleCount((prev) => prev + 6)
+      setIsLoading(false)
+    }, 600)
+  }
+
   if (!mounted) return null
+
+  const visibleArchitects = architects.slice(0, visibleCount)
+  const hasMore = visibleCount < architects.length
 
   return (
     <Section
-      sectionHeaderTitle='Our Architectors'
+      id='architects'
+      sectionHeaderTitle='Our Architects'
       sectionClassName='max-sm:px-4 sm:px-24'
-      moreButtonLabel='More Architectors'
-      moreButtonPath='#'
-      sectionHeaderDescription="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
-            has been the industry's standard dummy text ever since the 1500s."
+      sectionHeaderDescription="Our team of world-class architects is dedicated to turning your vision into reality."
     >
-      <div className='grid grid-cols-1 sm:grid-cols-3 gap-6'>
-        {architectors.map((arch, index) => (
-          <div key={arch.fullName} onClick={() => setSelectedArch(arch)}>
-            <ArchitectorCard
-              fullName={arch.fullName}
-              image={arch.image}
-              feedback={arch.feedback}
-              profession={arch.profession}
-              rating={arch.rating}
-              index={index + 1}
-            />
+      <div className='flex flex-col gap-y-12'>
+        <div className='grid grid-cols-1 sm:grid-cols-3 gap-8'>
+          <AnimatePresence mode='popLayout'>
+            {visibleArchitects.map((arch, index) => (
+              <motion.div
+                key={`${arch.fullName}-${index}`}
+                layout
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ 
+                  duration: 0.4, 
+                  delay: (index % 6) * 0.1 
+                }}
+              >
+                <ArchitectCard
+                  fullName={arch.fullName}
+                  image={arch.image}
+                  feedback={arch.feedback}
+                  profession={arch.profession}
+                  rating={arch.rating}
+                  index={index + 1}
+                  onClick={() => setSelectedArch(arch)}
+                />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </div>
+
+        {hasMore && (
+          <div className='flex justify-center'>
+            <Button
+              onClick={handleLoadMore}
+              disabled={isLoading}
+              className='bg-transparent border-2 border-primary text-primary hover:bg-primary hover:text-white px-10 py-6 rounded-xl text-lg font-bold transition-all transform hover:scale-105 active:scale-95 shadow-lg shadow-primary/10'
+            >
+              {isLoading ? (
+                <div className='flex items-center gap-2'>
+                  <Loader2 className='animate-spin size-5' />
+                  <span>Loading Professionals...</span>
+                </div>
+              ) : (
+                'More Architects'
+              )}
+            </Button>
           </div>
-        ))}
+        )}
       </div>
 
+      {/* Modal remains the same */}
       <AnimatePresence>
         {selectedArch && (
           <Dialog open={true} onOpenChange={() => setSelectedArch(null)}>
@@ -81,7 +131,6 @@ export default function ArchitectorsSection() {
               </button>
 
               <div className='flex h-full flex-col md:flex-row overflow-hidden'>
-                {/* Left Side: Info */}
                 <div className='w-full md:w-[40%] p-8 md:p-12 flex flex-col justify-center bg-blue-1/5 h-full border-r border-blue-1/20 overflow-y-auto'>
                   <div className='flex flex-col items-center md:items-start space-y-6'>
                     <motion.div 
@@ -126,7 +175,6 @@ export default function ArchitectorsSection() {
                   </div>
                 </div>
 
-                {/* Right Side: Portfolio */}
                 <div className='w-full md:w-[60%] p-8 bg-[#181928] flex flex-col h-full'>
                   <h3 className='text-2xl font-bold mb-6 text-white flex items-center gap-2'>
                     Portfolio Showcase

@@ -1,5 +1,5 @@
 import AboutSection from '@/components/sections/about.section'
-import ArchitectorsSection from '@/components/sections/architectors.section'
+import ArchitectsSection from '@/components/sections/architects.section'
 import CustomersSection from '@/components/sections/customers.section'
 import HeroSection from '@/components/sections/hero.section'
 import NewsSection from '@/components/sections/news.section'
@@ -9,9 +9,9 @@ import SubscriptionSection from '@/components/sections/subscription.section'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'ArxPro | Home',
+  title: 'Archify | Home',
   openGraph: {
-    title: 'ArxPro | Home',
+    title: 'Archify | Home',
   },
 }
 
@@ -22,7 +22,7 @@ export default function HomePage() {
       <AboutSection />
       <ProjectsSection />
       <CustomersSection />
-      <ArchitectorsSection />
+      <ArchitectsSection />
       {/* <CategoriesSection /> */}
       <SubscriptionSection />
       <NewsSection />
