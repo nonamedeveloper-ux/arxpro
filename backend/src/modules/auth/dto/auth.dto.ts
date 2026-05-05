@@ -7,9 +7,8 @@ import {
   IsString,
   Length,
 } from 'class-validator';
-import { RoleEnum } from 'src/common/enums/enum';
+import { RoleEnum } from '../../../common/enums/enum';
 
-const Role = [RoleEnum.ARCHITEKTOR, RoleEnum.USER];
 
 export class LoginDto {
   @ApiProperty({
@@ -81,10 +80,11 @@ export class CreateUserDto {
   email: string;
 
   @ApiProperty({
-    type: Role,
-    example: RoleEnum.USER,
+    type: String,
+    enum: RoleEnum,
+    example: RoleEnum.CLIENT,
   })
   @IsOptional()
-  @IsEnum(Role)
-  role: RoleEnum;
+  @IsString()
+  role: string;
 }

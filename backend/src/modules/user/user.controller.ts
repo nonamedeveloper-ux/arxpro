@@ -48,7 +48,7 @@ export class UserController {
     return await this.userService.findAll();
   }
 
-  @Auth(RoleEnum.USER, RoleEnum.ADMIN, RoleEnum.ARCHITEKTOR)
+  @Auth(RoleEnum.CLIENT, RoleEnum.ADMIN, RoleEnum.ARCHITECT)
   @Get(':id')
   async findOne(@Param('id', ParseUUIDPipe) id: ID) {
     return await this.userService.findOneById(id);

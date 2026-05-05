@@ -111,11 +111,17 @@ export default function RegisterForm({ setIsVerifying }: RegisterFormProps) {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value='user' className='font-bold'>
-                    User
+                  <SelectItem value='admin' className='font-bold'>
+                    Admin
                   </SelectItem>
-                  <SelectItem value='architektor' className='font-bold'>
+                  <SelectItem value='client' className='font-bold'>
+                    Client
+                  </SelectItem>
+                  <SelectItem value='architect' className='font-bold'>
                     Architect
+                  </SelectItem>
+                  <SelectItem value='seller' className='font-bold'>
+                    Seller
                   </SelectItem>
                 </SelectContent>
               </Select>

@@ -6,8 +6,8 @@ export const menuLinks = [
 ]
 
 export const subMenuLinks = [
-  { path: '/projects', name: 'Projects' },
-  { path: '/architects', name: 'Architects' },
+  { path: '/#projects', name: 'Projects' },
+  { path: '/#architects', name: 'Architects' },
 ]
 
 export const architects = [

@@ -8,7 +8,7 @@ import {
 } from 'class-validator';
 import { RoleEnum } from 'src/common/enums/enum';
 
-const Role = [RoleEnum.ARCHITEKTOR, RoleEnum.USER];
+const Role = [RoleEnum.ARCHITECT, RoleEnum.CLIENT];
 
 export class CreateUserDto {
   @ApiProperty({
@@ -38,7 +38,7 @@ export class CreateUserDto {
 
   @ApiProperty({
     enum: RoleEnum,
-    example: RoleEnum.USER,
+    example: RoleEnum.CLIENT,
   })
   @IsEnum(Role)
   @IsNotEmpty()
