@@ -31,27 +31,29 @@ export class UserRepository implements IUserRepository {
       [id],
     );
 
-    return result.map((user) => ({
+    const mapped = result.map((user) => ({
       id: user.id,
-      nick_name: user.nick_name,
-      first_name: user.first_name ? user.first_name : null,
-      last_name: user.last_name ? user.last_name : null,
-      middle_name: user.middle_name ? user.middle_name : null,
+      nickName: user.nick_name,
+      firstName: user.first_name ? user.first_name : null,
+      lastName: user.last_name ? user.last_name : null,
+      middleName: user.middle_name ? user.middle_name : null,
       email: user.email ? user.email : null,
       phone: user.phone,
       role: user.role,
-      profile_image_id: user.profile_image_id ? user.profile_image_id : null,
-      background_image_id: user.background_image_id
+      profileImageId: user.profile_image_id ? user.profile_image_id : null,
+      backgroundImageId: user.background_image_id
         ? user.background_image_id
         : null,
 
-      profile_image_path: user.profileImagePath?.replace(/\\/g, '/') ?? null,
+      profileImagePath: user.profileImagePath?.replace(/\\/g, '/') ?? null,
 
-      background_image_path: user.backgroundImagePath?.replace(/\\/g, '/') ?? null,
+      backgroundImagePath: user.backgroundImagePath?.replace(/\\/g, '/') ?? null,
 
-      created_at: user.created_at,
-      last_update_at: user.last_update_at,
+      createdAt: user.created_at,
+      lastUpdateAt: user.last_update_at,
     }));
+
+    return mapped[0];
   }
 
   async findOne(id: ID): Promise<any> {

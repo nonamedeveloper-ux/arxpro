@@ -34,7 +34,7 @@ export class ArchitektorController {
     private readonly districtService: DistrictService,
   ) {}
 
-  @Auth(RoleEnum.ADMIN, RoleEnum.ARCHITEKTOR)
+  @Auth(RoleEnum.ADMIN, RoleEnum.ARCHITECT)
   @Post()
   async create(@Body() createArchitektorDto: CreateArchitektorDto) {
     await this.architektorService.findOneByNickeName(
@@ -45,7 +45,7 @@ export class ArchitektorController {
       createArchitektorDto.userId,
     );
 
-    if (!(checkUser.data.role === RoleEnum.ARCHITEKTOR)) {
+    if (!(checkUser.data.role === RoleEnum.ARCHITECT)) {
       throw new ArchitektorNotAdminException();
     }
 
@@ -140,7 +140,7 @@ export class ArchitektorController {
     return this.architektorService.getUniqueCategories();
   }
 
-  @Auth(RoleEnum.ADMIN, RoleEnum.ARCHITEKTOR)
+  @Auth(RoleEnum.ADMIN, RoleEnum.ARCHITECT)
   @Put(':id')
   async update(
     @Param('id', ParseUUIDPipe) id: ID,
@@ -157,7 +157,7 @@ export class ArchitektorController {
         updateArchitektorDto.userId,
       );
 
-      if (!(checkUser.data.role === RoleEnum.ARCHITEKTOR)) {
+      if (!(checkUser.data.role === RoleEnum.ARCHITECT)) {
         throw new ArchitektorNotAdminException();
       }
     }
@@ -179,7 +179,7 @@ export class ArchitektorController {
     return this.architektorService.updated(updateArchitektorDto, id);
   }
 
-  @Auth(RoleEnum.ADMIN, RoleEnum.ARCHITEKTOR)
+  @Auth(RoleEnum.ADMIN, RoleEnum.ARCHITECT)
   @Delete(':id')
   async delete(@Param('id', ParseUUIDPipe) id: ID) {
     return this.architektorService.delete(id);

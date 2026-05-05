@@ -23,3 +23,9 @@ export class NickNameIsNotException extends HttpException {
     super('nick name is not unique', HttpStatus.BAD_REQUEST);
   }
 }
+
+export class UserPhoneSuchExseption extends HttpException {
+  constructor() {
+    super('There is such a phone user', 400);
+  }
+}

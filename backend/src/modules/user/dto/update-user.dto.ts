@@ -13,7 +13,7 @@ import { ID } from "../../../common/types/Id.type";
 import { UUID } from "typeorm/driver/mongodb/bson.typings";
 
 // export class UpdateUserDto extends PartialType(CreateUserDto) {}
-const Role = [RoleEnum.ARCHITEKTOR, RoleEnum.USER];
+const Role = [RoleEnum.ARCHITECT, RoleEnum.CLIENT];
 
 export class UpdateUserDto extends CreateUserDto {
   @ApiProperty({
@@ -43,7 +43,7 @@ export class UpdateUserDto extends CreateUserDto {
 
   @ApiProperty({
     enum: RoleEnum,
-    example: RoleEnum.USER,
+    example: RoleEnum.CLIENT,
   })
   @IsEnum(Role)
   @IsOptional()

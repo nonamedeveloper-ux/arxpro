@@ -15,9 +15,12 @@ import JoinButton from './join-button'
 import { menuLinks, subMenuLinks } from '@/constants'
 import { Button } from '../ui/button'
 import { cn } from '@/lib/utils'
+import useCurrentUser from '@/hooks/use-current-user'
+import UserBox from './user-box'
 
 export default function MobileMenu() {
   const pathname = usePathname()
+  const { currentUser, isLoading, setCurrentUser } = useCurrentUser()
 
   return (
     <Sheet>
@@ -42,9 +45,13 @@ export default function MobileMenu() {
             </Link>
           </SheetClose>
 
-          <SheetClose asChild>
-            <JoinButton />
-          </SheetClose>
+          {isLoading ? null : currentUser ? (
+            <UserBox currentUser={currentUser} setCurrentUser={setCurrentUser} />
+          ) : (
+            <SheetClose asChild>
+              <JoinButton />
+            </SheetClose>
+          )}
         </SheetHeader>
 
         {[...menuLinks, ...subMenuLinks].map(({ path, name }) => (

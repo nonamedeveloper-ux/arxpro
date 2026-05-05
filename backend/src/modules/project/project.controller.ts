@@ -25,7 +25,7 @@ export class ProjectController {
     private readonly architektorService: ArchitektorService,
   ) {}
 
-  @Auth(RoleEnum.ARCHITEKTOR, RoleEnum.ADMIN)
+  @Auth(RoleEnum.ARCHITECT, RoleEnum.ADMIN)
   @Post()
   async create(@Body() createProjectDto: CreateProjectDto) {
     console.log(1);
@@ -44,7 +44,7 @@ export class ProjectController {
     return await this.projectService.findOneById(id);
   }
 
-  @Auth(RoleEnum.ADMIN, RoleEnum.ARCHITEKTOR)
+  @Auth(RoleEnum.ADMIN, RoleEnum.ARCHITECT)
   @Put(':id')
   async update(
     @Param('id', ParseUUIDPipe) id: ID,
@@ -57,7 +57,7 @@ export class ProjectController {
     return await this.projectService.updated(updateProjectDto, id);
   }
 
-  @Auth(RoleEnum.ADMIN, RoleEnum.ARCHITEKTOR)
+  @Auth(RoleEnum.ADMIN, RoleEnum.ARCHITECT)
   @Delete(':id')
   delete(@Param('id', ParseUUIDPipe) id: ID) {
     return this.projectService.delete(id);

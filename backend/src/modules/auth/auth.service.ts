@@ -7,6 +7,7 @@ import {
   LoginOrPasswordWrongException,
   NickNameIsNotException,
   UserEmailSuchExseption,
+  UserPhoneSuchExseption,
 } from './exception/auth.exception';
 import { compar, hashed } from '../../lib/bcrypt';
 import { UserEntity } from '../user/entities/user.entity';
@@ -58,9 +59,26 @@ export class AuthService {
     if (foundUser) {
       throw new UserEmailSuchExseption();
     }
+
+    if (dto.phone) {
+      const foundPhone = await this.userRepository.findOneByPhone(dto.phone);
+      if (foundPhone) {
+        throw new UserPhoneSuchExseption();
+      }
+    }
+
+    if (dto.nickName) {
+      const foundNickName = await this.userRepository.findOneByNickName(
+        dto.nickName,
+      );
+      if (foundNickName) {
+        throw new NickNameIsNotException();
+      }
+    }
+
     dto.password = await hashed(dto.password);
     const newUser = new UserEntity();
-    newUser.phone = dto.phone || '';
+    newUser.phone = dto.phone;
 
     const newData = Object.assign(newUser, dto);
 
