@@ -26,6 +26,8 @@ import { UserMessageModule } from './modules/user-message/user-message.module';
 import { ContactUsModule } from './modules/contact-us/contact-us.module';
 import { SubscribersModule } from './modules/subscribers/subscribers.module';
 import { CommentModule } from './modules/comment/comment.module';
+import { OrderModule } from './modules/order/order.module';
+import { AnalyticsModule } from './modules/analytics/analytics.module';
 
 @Module({
   imports: [
@@ -68,6 +70,8 @@ import { CommentModule } from './modules/comment/comment.module';
     ContactUsModule,
     SubscribersModule,
     CommentModule,
+    OrderModule,
+    AnalyticsModule,
   ],
   controllers: [],
   providers: [],

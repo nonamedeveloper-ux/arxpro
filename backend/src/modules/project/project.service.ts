@@ -12,8 +12,8 @@ import { IProjectService } from './interfaces/project.service';
 export class ProjectService implements IProjectService {
   constructor(private readonly repository: ProjectRepository) {}
 
-  async findAll(): Promise<ResData<ProjectEntity[]>> {
-    const Projects = await this.repository.findAll();
+  async findAll(filter?: FilterProjectDto): Promise<ResData<ProjectEntity[]>> {
+    const Projects = await this.repository.findAll(filter);
 
     return new ResData<Array<ProjectEntity>>('get all projects', 200, Projects);
   }

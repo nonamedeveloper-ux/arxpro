@@ -113,12 +113,26 @@ export default function UserBox({ currentUser, setCurrentUser }: UserBoxProps) {
               </DropdownMenuItem>
             </>
           ) : (
-            <DropdownMenuItem asChild className='focus:bg-primary/10 focus:text-primary cursor-pointer'>
-              <Link href='/profile' className='flex w-full items-center py-1'>
-                <User className='mr-3 h-4 w-4' />
-                <span>My Profile</span>
-              </Link>
-            </DropdownMenuItem>
+            <>
+              <DropdownMenuItem asChild className='focus:bg-primary/10 focus:text-primary cursor-pointer'>
+                <Link href='/dashboard' className='flex w-full items-center py-1'>
+                  <LayoutDashboard className='mr-3 h-4 w-4' />
+                  <span>Dashboard</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild className='focus:bg-primary/10 focus:text-primary cursor-pointer'>
+                <Link href='/profile' className='flex w-full items-center py-1'>
+                  <User className='mr-3 h-4 w-4' />
+                  <span>My Profile</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild className='focus:bg-primary/10 focus:text-primary cursor-pointer'>
+                <Link href='/messages' className='flex w-full items-center py-1'>
+                  <MessageSquare className='mr-3 h-4 w-4' />
+                  <span>Messages</span>
+                </Link>
+              </DropdownMenuItem>
+            </>
           )}
         </DropdownMenuGroup>
         <DropdownMenuSeparator className='bg-white/10' />

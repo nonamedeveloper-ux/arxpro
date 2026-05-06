@@ -7,10 +7,12 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ProjectService } from './project.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
+import { FilterProjectDto } from './dto/filter-project.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { ID } from '../../common/types/Id.type';
 import { ArchitektorService } from '../architektor/architektor.service';
@@ -35,8 +37,8 @@ export class ProjectController {
   }
 
   @Get()
-  async findAll() {
-    return await this.projectService.findAll();
+  async findAll(@Query() filter: FilterProjectDto) {
+    return await this.projectService.findAll(filter);
   }
 
   @Get(':id')

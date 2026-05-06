@@ -10,18 +10,39 @@ export class ProjectRepository implements IProjectRepository {
     @InjectRepository(ProjectEntity)
     private repository: Repository<ProjectEntity>,
   ) {}
-  async findAll(): Promise<Array<ProjectEntity>> {
-    return await this.repository.query(`SELECT
-  p.id,
-  p.name,
-  p.price,
-  p.teg,
-  p.project_image_id AS "projectImageId",
-  f.file_path AS "projectImagePath"
-FROM
-  projects p
-LEFT JOIN
-  LATERAL (SELECT file_path FROM files WHERE id = (SELECT jsonb_array_elements_text(p.project_image_id)::uuid LIMIT 1)) f ON TRUE;`)
+  async findAll(filter?: FilterProjectDto): Promise<Array<ProjectEntity>> {
+    let whereClause = 'WHERE 1=1';
+    const params = [];
+
+    if (filter?.minPrice) {
+      params.push(filter.minPrice);
+      whereClause += ` AND p.price >= $${params.length}`;
+    }
+    if (filter?.maxPrice) {
+      params.push(filter.maxPrice);
+      whereClause += ` AND p.price <= $${params.length}`;
+    }
+    if (filter?.search) {
+      params.push(`%${filter.search}%`);
+      whereClause += ` AND (p.size ILIKE $${params.length} OR p.teg ILIKE $${params.length})`;
+    }
+
+    const query = `
+      SELECT
+        p.id,
+        p.name,
+        p.price,
+        p.teg,
+        p.project_image_id AS "projectImageId",
+        f.file_path AS "projectImagePath"
+      FROM
+        projects p
+      LEFT JOIN
+        LATERAL (SELECT file_path FROM files WHERE id = (SELECT jsonb_array_elements_text(p.project_image_id)::uuid LIMIT 1)) f ON TRUE
+      ${whereClause};
+    `;
+
+    return await this.repository.query(query, params);
   }
 
   async findMaxNumber(): Promise<number> {

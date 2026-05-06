@@ -19,6 +19,10 @@ import { Button } from '@/components/ui/button'
 import useCurrentUser from '@/hooks/use-current-user'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
+import ClientDashboard from '@/components/dashboard/client-dashboard'
+import { cn } from '@/lib/utils'
+import { getArchitectStats } from '@/actions/analytics.action'
+import { useEffect, useState } from 'react'
 import { 
   LineChart, 
   Line, 
@@ -58,73 +62,21 @@ export default function DashboardPage() {
   const { currentUser } = useCurrentUser()
   const router = useRouter()
   const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d'>('7d')
+  const [stats, setStats] = useState<any[]>([])
+  const [recentActivity, setRecentActivity] = useState<any[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
-  const stats = [
-    {
-      title: 'Total Projects',
-      value: '12',
-      change: '+2',
-      icon: FolderKanban,
-      color: 'text-orange-500',
-      bg: 'bg-orange-500/10',
-      path: '/projects'
-    },
-    {
-      title: 'Total Clients',
-      value: '48',
-      change: '+5',
-      icon: Users,
-      color: 'text-blue-500',
-      bg: 'bg-blue-500/10',
-      path: '/clients'
-    },
-    {
-      title: 'Messages',
-      value: '24',
-      change: '+12',
-      icon: MessageSquare,
-      color: 'text-green-500',
-      bg: 'bg-green-500/10',
-      path: '/messages',
-      badge: 3
-    },
-    {
-      title: 'Profile Views',
-      value: '1.2k',
-      change: '+18%',
-      icon: Eye,
-      color: 'text-purple-500',
-      bg: 'bg-purple-500/10',
-      path: '/analytics'
+  useEffect(() => {
+    if (currentUser?.role === 'architect') {
+      getArchitectStats().then(res => {
+        if (res.status === 200) {
+          setStats(res.data.stats)
+          setRecentActivity(res.data.recentActivity)
+        }
+        setIsLoading(false)
+      })
     }
-  ]
-
-  const recentActivity = [
-    {
-      id: 1,
-      type: 'project',
-      title: 'New project "Modern Villa" created',
-      time: '2 hours ago',
-      icon: FolderKanban,
-      path: '/projects'
-    },
-    {
-      id: 2,
-      type: 'message',
-      title: 'New message from John Doe',
-      time: '5 hours ago',
-      icon: MessageSquare,
-      path: '/messages'
-    },
-    {
-      id: 3,
-      type: 'client',
-      title: 'New client "Sarah Smith" assigned',
-      time: 'Yesterday',
-      icon: Users,
-      path: '/clients'
-    }
-  ]
+  }, [currentUser])
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -139,6 +91,17 @@ export default function DashboardPage() {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 }
   }
+
+  if (currentUser?.role === 'client') {
+    return <ClientDashboard user={currentUser} />
+  }
+
+  const defaultStats = [
+    { title: 'Total Projects', icon: FolderKanban, color: 'text-orange-500', bg: 'bg-orange-500/10', path: '/projects' },
+    { title: 'Total Clients', icon: Users, color: 'text-blue-500', bg: 'bg-blue-500/10', path: '/clients' },
+    { title: 'Messages', icon: MessageSquare, color: 'text-green-500', bg: 'bg-green-500/10', path: '/messages' },
+    { title: 'Profile Views', icon: Eye, color: 'text-purple-500', bg: 'bg-purple-500/10', path: '/analytics' }
+  ]
 
   return (
     <motion.div 
@@ -188,35 +151,47 @@ export default function DashboardPage() {
       </div>
 
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
-        {stats.map((stat, idx) => (
-          <motion.div
-            key={stat.title}
-            variants={itemVariants}
-            whileHover={{ scale: 1.02 }}
-            className='cursor-pointer group'
-            onClick={() => router.push(stat.path)}
-          >
-            <Card className='bg-[#0A0A0A]/50 backdrop-blur-md border-white/10 group-hover:border-orange-500/50 transition-all duration-500 group-hover:shadow-[0_0_20px_rgba(249,115,22,0.1)] overflow-hidden relative'>
-              <div className='absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity' />
-              <CardHeader className='flex flex-row items-center justify-between pb-2'>
-                <CardTitle className='text-sm font-medium text-gray-400'>{stat.title}</CardTitle>
-                <div className={`${stat.bg} ${stat.color} p-2 rounded-xl transition-transform duration-500 group-hover:rotate-12`}>
-                  <stat.icon className='size-4' />
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className='text-3xl font-bold tracking-tight'>{stat.value}</div>
-                <div className='flex items-center gap-2 mt-2'>
-                  <span className='text-xs text-green-500 flex items-center bg-green-500/10 px-2 py-0.5 rounded-full'>
-                    <TrendingUp className='size-3 mr-1' />
-                    {stat.change}
-                  </span>
-                  <span className='text-[10px] text-gray-500'>vs last month</span>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        ))}
+        {isLoading ? (
+          Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="h-32 bg-white/5 animate-pulse rounded-2xl" />
+          ))
+        ) : (
+          stats.map((stat, idx) => {
+            const Icon = defaultStats.find(s => s.title === stat.title)?.icon || FolderKanban;
+            const color = defaultStats.find(s => s.title === stat.title)?.color || 'text-orange-500';
+            const bg = defaultStats.find(s => s.title === stat.title)?.bg || 'bg-orange-500/10';
+            
+            return (
+              <motion.div
+                key={stat.title}
+                variants={itemVariants}
+                whileHover={{ scale: 1.02 }}
+                className='cursor-pointer group'
+                onClick={() => router.push(stat.path)}
+              >
+                <Card className='bg-[#0A0A0A]/50 backdrop-blur-md border-white/10 group-hover:border-orange-500/50 transition-all duration-500 group-hover:shadow-[0_0_20px_rgba(249,115,22,0.1)] overflow-hidden relative'>
+                  <div className='absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity' />
+                  <CardHeader className='flex flex-row items-center justify-between pb-2'>
+                    <CardTitle className='text-sm font-medium text-gray-400'>{stat.title}</CardTitle>
+                    <div className={`${bg} ${color} p-2 rounded-xl transition-transform duration-500 group-hover:rotate-12`}>
+                      <Icon className='size-4' />
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className='text-3xl font-bold tracking-tight'>{stat.value}</div>
+                    <div className='flex items-center gap-2 mt-2'>
+                      <span className='text-xs text-green-500 flex items-center bg-green-500/10 px-2 py-0.5 rounded-full'>
+                        <TrendingUp className='size-3 mr-1' />
+                        {stat.change}
+                      </span>
+                      <span className='text-[10px] text-gray-500'>vs last month</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )
+          })
+        )}
       </div>
 
       <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
@@ -303,28 +278,39 @@ export default function DashboardPage() {
             Recent Activity
           </h2>
           <div className='space-y-4'>
-            {recentActivity.map((activity) => (
-              <motion.div 
-                key={activity.id} 
-                whileHover={{ x: 5 }}
-                onClick={() => router.push(activity.path)}
-                className='p-4 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-4 hover:bg-white/10 hover:border-orange-500/30 transition-all cursor-pointer group'
-              >
-                <div className='p-2 bg-orange-500/10 rounded-xl group-hover:scale-110 transition-transform'>
-                  <activity.icon className='size-4 text-orange-500' />
-                </div>
-                <div className='flex-1'>
-                  <p className='text-sm font-medium group-hover:text-orange-500 transition-colors'>{activity.title}</p>
-                  <p className='text-xs text-gray-500 mt-1.5 flex items-center gap-2'>
-                    <Clock className='size-3' />
-                    {activity.time}
-                  </p>
-                </div>
-                <div className='size-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-orange-500/20 group-hover:text-orange-500 transition-all'>
-                  <ArrowUpRight className='size-4' />
-                </div>
-              </motion.div>
-            ))}
+            {isLoading ? (
+               <div className='h-40 bg-white/5 animate-pulse rounded-2xl' />
+            ) : recentActivity.length > 0 ? (
+              recentActivity.map((activity) => {
+                const Icon = activity.type === 'client' ? Users : FolderKanban;
+                return (
+                  <motion.div 
+                    key={activity.id} 
+                    whileHover={{ x: 5 }}
+                    onClick={() => router.push(activity.path)}
+                    className='p-4 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-4 hover:bg-white/10 hover:border-orange-500/30 transition-all cursor-pointer group'
+                  >
+                    <div className='p-2 bg-orange-500/10 rounded-xl group-hover:scale-110 transition-transform'>
+                      <Icon className='size-4 text-orange-500' />
+                    </div>
+                    <div className='flex-1'>
+                      <p className='text-sm font-medium group-hover:text-orange-500 transition-colors'>{activity.title}</p>
+                      <p className='text-xs text-gray-500 mt-1.5 flex items-center gap-2'>
+                        <Clock className='size-3' />
+                        {new Date(activity.time).toLocaleString()}
+                      </p>
+                    </div>
+                    <div className='size-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-orange-500/20 group-hover:text-orange-500 transition-all'>
+                      <ArrowUpRight className='size-4' />
+                    </div>
+                  </motion.div>
+                )
+              })
+            ) : (
+              <div className="py-10 text-center text-gray-500 border border-dashed border-white/10 rounded-2xl">
+                No recent activity.
+              </div>
+            )}
             
             <Button 
               variant='ghost' 
@@ -339,6 +325,4 @@ export default function DashboardPage() {
   )
 }
 
-function cn(...classes: string[]) {
-  return classes.filter(Boolean).join(' ')
-}
+

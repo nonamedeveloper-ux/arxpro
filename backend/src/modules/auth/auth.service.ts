@@ -26,7 +26,7 @@ export class AuthService {
     private jwtService: JwtService,
     private readonly mailService: MailService,
     @Inject('CACHE_MANAGER') private cacheManager: Cache,
-  ) {}
+  ) { }
 
   async login(dto: LoginDto): Promise<ResData<ILoginData>> {
     const foundUser = await this.userRepository.findOneByEmail(dto.email);
@@ -115,9 +115,14 @@ export class AuthService {
   }
 
   async verifyOtp(dto: VerifyOtpDto): Promise<ResData<boolean>> {
-    // For development: Accept any code
-    const checked = true;
+    const cachedCode = await this.cacheManager.get(dto.email);
 
-    return new ResData<boolean>('Verify OTP code', 200, checked);
+    if (!cachedCode || String(cachedCode) !== String(dto.code)) {
+      return new ResData<boolean>('Incorrect verification code', 400, false);
+    }
+
+    await this.cacheManager.del(dto.email);
+
+    return new ResData<boolean>('Verified successfully', 200, true);
   }
 }
